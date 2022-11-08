@@ -1,36 +1,38 @@
 [package]
-name = "rustapi"
+name = "rustapi-sql"
 version = "0.1.0"
-authors = ["ndelvalle <nicolas.delvalle@gmail.com>"]
+authors = ["ndelvalle <nicolas.delvalle@gmail.com>", "gillchristian <gillchristian@gmail.com>"]
 edition = "2021"
 
 [dependencies]
-config = "0.13.2"
-serde = { version = "1.0.145", features = ["derive"] }
-serde_json = "1.0.86"
-serde_derive = "1.0.136"
-# Wait for wither to relase a new version.
-# https://github.com/thedodd/wither/pull/89#issuecomment-1023644443
-wither = { git = "https://github.com/thedodd/wither" }
-futures = "0.3.24"
-thiserror = "1.0.37"
-axum = { version = "0.5.16", features = ["headers"] }
-tokio = { version = "1.21.2", features = ["full"] }
-tracing = "0.1.37"
-tracing-subscriber = "0.3.15"
-tower-http = { version = "0.3.4", features = ["trace", "compression-br", "propagate-header", "sensitive-headers"] }
-http = "0.2.8"
-chrono = "0.4.22"
 async-trait = "0.1.57"
+axum = { version = "0.5.16", features = ["headers"] }
+bcrypt = "0.13.0"
 # Investigate if wither::bson can be used instead and activate this feature.
 bson = { version = "2.2.0", features = ["serde_with", "chrono-0_4"] }
+bytes = "1.2.1"
+chrono = "0.4.22"
+config = "0.13.2"
+diesel = { version = "2.0.0", features = ["postgres", "r2d2", "chrono"] }
+diesel_migrations = "2.0.0"
+futures = "0.3.24"
+http = "0.2.8"
 jsonwebtoken = "8.1.1"
-once_cell = "1.15.0"
-bcrypt = "0.13.0"
-validator = { version = "0.16.0", features = ["derive"] }
 lazy_static = "1.4.0"
 mime = "0.3.16"
-bytes = "1.2.1"
+once_cell = "1.15.0"
+serde = { version = "1.0.145", features = ["derive"] }
+serde_derive = "1.0.136"
+serde_json = "1.0.86"
+thiserror = "1.0.37"
+tokio = { version = "1.21.2", features = ["full"] }
+tower-http = { version = "0.3.4", features = ["trace", "compression-br", "propagate-header", "sensitive-headers"] }
+tracing = "0.1.37"
+tracing-subscriber = "0.3.15"
+validator = { version = "0.16.0", features = ["derive"] }
+# Wait for wither to relase a new version
+# https://github.com/thedodd/wither/pull/89#issuecomment-1023644443
+wither = { git = "https://github.com/thedodd/wither" } 
 
 [dev-dependencies]
 assert-json-diff = "2.0.2"

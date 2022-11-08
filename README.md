@@ -2,23 +2,26 @@
 
 [![Tests](https://github.com/ndelvalle/rustapi/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/ndelvalle/rustapi/actions/workflows/test.yml)
 
-RESTful API template built with Rust lang. It uses [MongoDB](https://docs.mongodb.com/)
-database and [Axum](https://github.com/tokio-rs/axum) HTTP framework.
+RESTful API template built with Rust. It uses
+[PostgreSQL](https://www.postgresql.org/) database and
+[Axum](https://github.com/tokio-rs/axum) HTTP framework.
 
 ### Requirements
 
 - [Rust](https://www.rust-lang.org/tools/install)
-- [MongoDB](https://docs.mongodb.com/manual/installation/)
+- [PostgreSQL](https://www.postgresql.org/)
 
 ### How to
 
-To use this template as your project starting point, click "Use this template" at the top of this page, or click [here](https://github.com/ndelvalle/rustapi/generate).
+To use this template as your project starting point, click "Use this template"
+at the top of this page, or go to
+[github.com/gillchristian/rustapi/generate](https://github.com/gillchristian/rustapi/generate).
 
 ### Features
 
-* Authentication. Based on [jsonwebtoken](https://github.com/Keats/jsonwebtoken)
-* Layered configuration system. Based on [config-rs](https://github.com/mehcode/config-rs)
-* Logs. Based on [tracing](https://github.com/tokio-rs/tracing)
+* Authentication with [jsonwebtoken](https://github.com/Keats/jsonwebtoken)
+* Layered configuration system with [config-rs](https://github.com/mehcode/config-rs)
+* Logs with [tracing](https://github.com/tokio-rs/tracing)
 * Error handling
 * CI Jobs based on Github actions
 * E2E Tests
@@ -65,3 +68,7 @@ To use this template as your project starting point, click "Use this template" a
 
 Contributors are welcome, please fork and send pull requests! If you find a bug
 or have any ideas on how to improve this project please submit an issue.
+
+## LICENSE
+
+[MIT License](/LICENSE) © [Christian Gill](https://gillchristian.xyz)

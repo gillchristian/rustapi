@@ -1,21 +1,9 @@
 use async_trait::async_trait;
+use diesel::prelude::*;
+use diesel::{Table as Table_};
 use futures::stream::TryStreamExt;
 use serde::{de::DeserializeOwned, ser::Serialize};
 use validator::Validate;
-use wither::bson::doc;
-use wither::bson::from_bson;
-use wither::bson::Bson;
-use wither::bson::Document;
-use wither::bson::{self, oid::ObjectId};
-use wither::mongodb::options::FindOneAndUpdateOptions;
-use wither::mongodb::options::FindOneOptions;
-use wither::mongodb::options::FindOptions;
-use wither::mongodb::options::ReturnDocument;
-use wither::mongodb::options::UpdateOptions;
-use wither::mongodb::results::DeleteResult;
-use wither::mongodb::results::UpdateResult;
-use wither::Model as WitherModel;
-use wither::ModelCursor;
 
 use crate::database::get_connection;
 use crate::errors::BadRequest;
@@ -25,21 +13,21 @@ use crate::errors::Error;
 // implement this and therefore inherit theses methods.
 #[async_trait]
 pub trait ModelExt {
-  type T: WitherModel + Send + Validate;
+  type T: Send + Validate;
 
-  async fn create(mut model: Self::T) -> Result<Self::T, Error> {
-    model
-      .validate()
-      .map_err(|_error| Error::BadRequest(BadRequest::empty()))?;
+  fn create(query: RunQueryDsl) -> Result<Self::T, Error> {
+    let conn = get_connection();
 
-    let connection = get_connection();
-    model.save(connection, None).await.map_err(Error::Wither)?;
-
-    Ok(model)
+    query
+        .get_result(conn)
+        .map_err(|err|  Error::Diesel(err))
   }
 
-  async fn find_by_id(id: &ObjectId) -> Result<Option<Self::T>, Error> {
+  async fn find_by_id(id: &i64) -> Result<Option<Self::T>, Error> {
     let connection = get_connection();
+
+    diesel::filter(table)
+
     Self::T::find_one(connection, doc! { "_id": id }, None)
       .await
       .map_err(Error::Wither)

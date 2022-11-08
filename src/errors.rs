@@ -5,23 +5,19 @@ use bcrypt::BcryptError;
 use serde_json::json;
 use tokio::task::JoinError;
 use wither::bson;
-use wither::mongodb::error::Error as MongoError;
-use wither::WitherError;
+use diesel::result::{Error as DieselError};
 
 #[derive(thiserror::Error, Debug)]
 #[error("...")]
 pub enum Error {
   #[error("{0}")]
-  Wither(#[from] WitherError),
-
-  #[error("{0}")]
-  Mongo(#[from] MongoError),
+  Diesel(#[from] DieselError),
 
   #[error("{0}")]
   ParseObjectID(#[from] bson::oid::Error),
 
-  #[error("{0}")]
-  SerializeMongoResponse(#[from] bson::de::Error),
+  // #[error("{0}")]
+  // SerializeMongoResponse(#[from] bson::de::Error),
 
   #[error("{0}")]
   Authenticate(#[from] AuthenticateError),
@@ -44,16 +40,6 @@ impl Error {
     match *self {
       // 4XX Errors
       Error::ParseObjectID(_) => (StatusCode::BAD_REQUEST, 40001),
-      // Error::Wither(WitherError::Mongo(MongoError { ref kind, .. })) => {
-      //   let mongo_error = kind.as_ref();
-      //   match mongo_error {
-      //     // MongoDB E11000 error code represent a duplicate key error
-      //     MongoErrorKind::CommandError(MongoCommandError { code: 11000, .. }) => {
-      //       (StatusCode::BAD_REQUEST, 40002)
-      //     }
-      //     _ => (StatusCode::INTERNAL_SERVER_ERROR, 5003),
-      //   }
-      // }
       Error::BadRequest(_) => (StatusCode::BAD_REQUEST, 40003),
       Error::NotFound(_) => (StatusCode::NOT_FOUND, 40003),
 
@@ -65,9 +51,8 @@ impl Error {
       Error::Authenticate(AuthenticateError::TokenCreation) => {
         (StatusCode::INTERNAL_SERVER_ERROR, 5001)
       }
-      Error::Wither(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5001),
-      Error::Mongo(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5003),
-      Error::SerializeMongoResponse(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5009),
+      Error::Diesel(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5003),
+      // Error::SerializeMongoResponse(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5009),
       Error::RunSyncTask(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5009),
       Error::HashPassword(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5009),
     }
